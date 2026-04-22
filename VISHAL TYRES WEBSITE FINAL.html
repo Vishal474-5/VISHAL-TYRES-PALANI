@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Find Your Tyre – Vishal Tyres</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --black:#0a0a0a;--white:#f5f4f0;--accent:#c8a96e;--accent2:#e8d5b0;
+  --card:#111;--border:rgba(255,255,255,0.07);--muted:#6e6e73;
+  --radius:16px;--fd:'Cormorant Garamond',serif;--fb:'Jost',sans-serif;
+  --ceat:#e8312a;--apollo:#1a6fc4;--bridge:#c8102e;--conti:#f5a623;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:var(--fb);font-weight:300;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:0 5vw;height:62px;background:rgba(10,10,10,.95);
+  backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--fd);font-size:1.35rem;font-weight:600;color:var(--white);text-decoration:none}
+.nav-logo span{color:var(--accent)}
+.nav-r{display:flex;align-items:center;gap:1.5rem}
+.nav-r a{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-r a:hover,.nav-phone:hover{color:var(--accent2)}
+.nav-phone{font-size:.82rem;font-weight:500;color:var(--accent);text-decoration:none;transition:color .2s}
+
+.hero{padding:4rem 6vw 2.5rem;text-align:center;
+  background:radial-gradient(ellipse 70% 60% at 50% 100%,rgba(200,169,110,.13) 0%,transparent 70%)}
+.hero-tag{font-size:.63rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:.8rem}
+.hero-title{font-family:var(--fd);font-size:clamp(2rem,5vw,4rem);font-weight:300;line-height:1.08;margin-bottom:.8rem}
+.hero-title em{font-style:italic;color:var(--accent)}
+.hero-sub{font-size:.88rem;color:var(--muted);max-width:500px;margin:0 auto;line-height:1.75}
+
+/* INFO BANNER */
+.info-banner{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.6rem 2rem;
+  background:linear-gradient(to right,rgba(200,169,110,.05),rgba(200,169,110,.12),rgba(200,169,110,.05));
+  border-top:1px solid rgba(200,169,110,.15);border-bottom:1px solid rgba(200,169,110,.15);
+  padding:1rem 6vw;margin-top:1.5rem;text-align:center;
+}
+.ib-addr{font-size:.78rem;color:rgba(245,244,240,.65);letter-spacing:.03em;line-height:1.6}
+.ib-addr strong{color:var(--accent);font-weight:500}
+.ib-phone{font-family:var(--fd);font-size:1.6rem;font-weight:600;color:var(--accent);
+  text-decoration:none;letter-spacing:.04em;transition:color .2s;white-space:nowrap}
+.ib-phone:hover{color:var(--accent2)}
+.ib-sep{color:rgba(200,169,110,.3);font-size:1.4rem}
+
+.price-note{text-align:center;font-size:.7rem;color:var(--muted);padding:1rem 6vw 0;line-height:1.7}
+.price-note b{color:var(--accent);font-weight:500}
+
+.legend{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.6rem 6vw 0}
+.lp{display:flex;align-items:center;gap:.45rem;padding:.35rem .9rem;border-radius:99px;
+  border:1px solid var(--border);font-size:.68rem;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;color:rgba(245,244,240,.5)}
+.ld{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+.tabs{display:flex;justify-content:center;gap:.5rem;padding:1.8rem 6vw 0}
+.tab{padding:.6rem 1.8rem;border-radius:99px;border:1px solid var(--border);background:transparent;
+  color:var(--muted);font-family:var(--fb);font-size:.8rem;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .25s}
+.tab.active{background:var(--accent);color:var(--black);border-color:var(--accent)}
+.tab:hover:not(.active){border-color:var(--accent);color:var(--accent)}
+
+.finder{padding:2rem 6vw 5rem}
+.sw{max-width:480px;margin:0 auto 2rem;position:relative}
+.si{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:99px;padding:.8rem 1.4rem .8rem 2.8rem;color:var(--white);
+  font-family:var(--fb);font-size:.86rem;outline:none;transition:border-color .25s}
+.si:focus{border-color:var(--accent)}
+.si::placeholder{color:var(--muted)}
+.sico{position:absolute;left:1.1rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.82rem}
+
+.vsec{display:none}.vsec.active{display:block}
+.clabel{font-size:.6rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--accent);margin:2.5rem 0 1.2rem;display:flex;align-items:center;gap:1rem}
+.clabel::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden}
+
+.vc{background:var(--card);padding:1.6rem;cursor:pointer;transition:background .25s;position:relative;overflow:hidden}
+.vc:hover{background:#181818}
+.vc.open{background:#131210}
+.vc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,var(--accent),transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.vc:hover::before,.vc.open::before{transform:scaleX(1)}
+
+.vc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
+.vc-make{font-size:.56rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem}
+.vc-name{font-family:var(--fd);font-size:1.4rem;font-weight:400;line-height:1.1}
+.vc-seg{font-size:.65rem;color:var(--muted);margin-top:.2rem}
+.vc-ic{font-size:2rem;opacity:.13;transition:opacity .3s,transform .3s;flex-shrink:0}
+.vc:hover .vc-ic,.vc.open .vc-ic{opacity:.26;transform:scale(1.08)}
+
+.vc-sz{display:inline-flex;align-items:center;gap:.4rem;margin-top:.65rem;
+  font-size:.66rem;color:rgba(200,169,110,.6);font-weight:500}
+.vc-sz::before{content:'';width:4px;height:4px;background:var(--accent);border-radius:50%;opacity:.5}
+
+.vc-tog{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);margin-top:.9rem;display:flex;align-items:center;gap:.3rem;user-select:none}
+.vc-arr{transition:transform .3s;display:inline-block}
+.vc.open .vc-arr{transform:rotate(90deg)}
+
+.tp{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1)}
+.vc.open .tp{max-height:800px}
+.tp-in{padding-top:1.2rem;border-top:1px solid var(--border);margin-top:1.1rem}
+.tp-head{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem}
+
+.tr{display:flex;align-items:center;gap:.75rem;padding:.75rem .85rem;border-radius:9px;
+  background:rgba(255,255,255,.025);margin-bottom:.4rem;border:1px solid var(--border);transition:all .2s}
+.tr:hover{background:rgba(200,169,110,.05);border-color:rgba(200,169,110,.2)}
+.tr:last-child{margin-bottom:0}
+
+.tr-badge{width:46px;height:26px;border-radius:6px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.5rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.tr-badge.ceat{background:rgba(232,49,42,.1);border:1px solid rgba(232,49,42,.3);color:var(--ceat)}
+.tr-badge.apollo{background:rgba(26,111,196,.1);border:1px solid rgba(26,111,196,.3);color:var(--apollo)}
+.tr-badge.bridge{background:rgba(200,16,46,.1);border:1px solid rgba(200,16,46,.3);color:var(--bridge)}
+.tr-badge.conti{background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);color:var(--conti)}
+
+.tr-info{flex:1;min-width:0}
+.tr-name{font-size:.79rem;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tr-sub{font-size:.63rem;color:var(--muted);margin-top:.1rem}
+
+.tr-r{text-align:right;flex-shrink:0}
+.tr-price{font-family:var(--fd);font-size:1.1rem;font-weight:600;color:var(--accent);line-height:1}
+.tr-per{font-size:.54rem;color:var(--muted);margin-top:.15rem;letter-spacing:.08em;text-transform:uppercase}
+
+.call-btn{margin-top:.9rem;display:flex;align-items:center;justify-content:center;gap:.5rem;
+  padding:.7rem 1rem;border-radius:9px;
+  background:linear-gradient(135deg,rgba(200,169,110,.1),rgba(200,169,110,.04));
+  border:1px solid rgba(200,169,110,.2);text-decoration:none;
+  font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent);transition:all .2s}
+.call-btn:hover{background:rgba(200,169,110,.18);border-color:rgba(200,169,110,.4)}
+
+.no-res{text-align:center;padding:3rem;color:var(--muted);font-size:.9rem;display:none}
+
+footer{padding:2.5rem 6vw;border-top:1px solid var(--border)}
+.foot-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.foot-logo{font-family:var(--fd);font-size:1.25rem;font-weight:600;margin-bottom:.5rem}
+.foot-logo span{color:var(--accent)}
+.foot-detail{font-size:.8rem;color:var(--muted);line-height:1.8}
+.foot-detail a{color:var(--accent);text-decoration:none}
+.foot-detail a:hover{color:var(--accent2)}
+.foot-copy{padding-top:1.2rem;font-size:.68rem;color:var(--muted);text-align:center}
+
+@media(max-width:660px){
+  .vgrid{grid-template-columns:1fr}
+  .info-banner{flex-direction:column;gap:.5rem}
+  .ib-sep{display:none}
+  .ib-phone{font-size:1.35rem}
+  .nav-r a:not(.nav-phone){display:none}
+  .foot-top{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html"><span>V</span>ishal Tyres</a>
+  <div class="nav-r">
+    <a href="index.html">Home</a>
+    <a class="nav-phone" href="tel:+919894845750">📞 98948 45750</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <p class="hero-tag">Tyre Finder &amp; Pricing</p>
+  <h1 class="hero-title">Find your tyre,<br><em>know the price.</em></h1>
+  <p class="hero-sub">Select your vehicle and see which CEAT, Apollo, Bridgestone &amp; Continental tyres fit — with market price ranges.</p>
+</div>
+
+<div class="info-banner">
+  <div class="ib-addr">
+    📍 <strong>52/5, Dindigul Rd, near SKN Building,<br>Anna Nagar, Palani, Tamil Nadu</strong>
+  </div>
+  <div class="ib-sep">·</div>
+  <a class="ib-phone" href="tel:+919894845750">📞 98948 45750</a>
+</div>
+
+<p class="price-note">
+  Prices are <b>approximate market ranges per tyre (incl. GST)</b>. Final price may vary.
+  Visit us or call <b>98948 45750</b> for exact quote.
+</p>
+
+<div class="legend">
+  <div class="lp"><div class="ld" style="background:var(--ceat)"></div>CEAT</div>
+  <div class="lp"><div class="ld" style="background:var(--apollo)"></div>Apollo</div>
+  <div class="lp"><div class="ld" style="background:var(--bridge)"></div>Bridgestone</div>
+  <div class="lp"><div class="ld" style="background:var(--conti)"></div>Continental</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('cars',this)">🚗 Cars</button>
+  <button class="tab" onclick="switchTab('bikes',this)">🏍️ Bikes</button>
+</div>
+
+<div class="finder">
+  <div class="sw">
+    <span class="sico">🔍</span>
+    <input class="si" id="searchInput" type="text" placeholder="Search… Swift, Creta, Activa, Classic 350" oninput="filter()"/>
+  </div>
+  <div class="no-res" id="noRes">No vehicles found.</div>
+
+  <div class="vsec active" id="cars">
+    <div class="clabel">Hatchbacks</div>
+    <div class="vgrid" id="g-hatch"></div>
+    <div class="clabel">Sedans</div>
+    <div class="vgrid" id="g-sedan"></div>
+    <div class="clabel">Compact SUVs</div>
+    <div class="vgrid" id="g-csuv"></div>
+    <div class="clabel">SUVs &amp; MUVs</div>
+    <div class="vgrid" id="g-suv"></div>
+  </div>
+
+  <div class="vsec" id="bikes">
+    <div class="clabel">Scooters</div>
+    <div class="vgrid" id="g-scoot"></div>
+    <div class="clabel">Commuter Bikes</div>
+    <div class="vgrid" id="g-comm"></div>
+    <div class="clabel">Sports &amp; Premium</div>
+    <div class="vgrid" id="g-sport"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="foot-top">
+    <div>
+      <div class="foot-logo"><span>V</span>ishal Tyres</div>
+      <div class="foot-detail">
+        📍 52/5, Dindigul Rd, near SKN Building<br>
+        Anna Nagar, Palani, Tamil Nadu<br>
+        📞 <a href="tel:+919894845750">98948 45750</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem">Brands We Stock</div>
+      <div style="font-family:var(--fd);font-size:1.1rem;color:rgba(245,244,240,.5);line-height:2">
+        CEAT &nbsp;·&nbsp; Apollo &nbsp;·&nbsp; Bridgestone &nbsp;·&nbsp; Continental
+      </div>
+    </div>
+  </div>
+  <div class="foot-copy">© 2025 Vishal Tyres, Palani. All prices are approximate &amp; subject to change.</div>
+</footer>
+
+<script>
+/* ── tyre helper functions ── */
+function t(b,n,m,s,p){return{b,n,m,s,p}}
+
+/* ── price sets by size category ── */
+function tyres13(){return[
+  t("ceat","CEAT","Milaze","155/80 R13","₹1,800 – ₹2,200"),
+  t("apollo","Apollo","Amazer 4G Life","155/80 R13","₹1,800 – ₹2,100"),
+  t("bridge","Bridgestone","Ecopia EP150","155/80 R13","₹2,700 – ₹3,200"),
+  t("conti","Continental","ComfortContact CC6","155/80 R13","₹2,350 – ₹3,000"),
+]}
+function tyres14(){return[
+  t("ceat","CEAT","Milaze X3","175/65 R14","₹2,100 – ₹2,600"),
+  t("apollo","Apollo","Amazer 4G Life","175/65 R14","₹2,000 – ₹2,500"),
+  t("bridge","Bridgestone","Ecopia EP150","175/65 R14","₹3,000 – ₹3,800"),
+  t("conti","Continental","ComfortContact CC6","175/65 R14","₹2,800 – ₹3,600"),
+]}
+function tyres15h(){return[
+  t("ceat","CEAT","SecuraDrive","185/65 R15","₹3,200 – ₹4,100"),
+  t("apollo","Apollo","Amazer 4G Life","185/65 R15","₹2,800 – ₹3,500"),
+  t("bridge","Bridgestone","Ecopia EP150","185/65 R15","₹3,200 – ₹4,000"),
+  t("conti","Continental","ComfortContact CC6","185/65 R15","₹3,200 – ₹4,200"),
+]}
+function tyres15p(){return[
+  t("ceat","CEAT","SecuraDrive","185/60 R15","₹3,200 – ₹4,100"),
+  t("apollo","Apollo","Alnac 4G","185/60 R15","₹2,900 – ₹3,800"),
+  t("bridge","Bridgestone","Turanza T005A","185/60 R15","₹3,500 – ₹4,800"),
+  t("conti","Continental","PremiumContact 6","185/60 R15","₹4,200 – ₹5,500"),
+]}
+function tyres16h(){return[
+  t("ceat","CEAT","Czar Sport","195/55 R16","₹3,600 – ₹5,000"),
+  t("apollo","Apollo","Alnac 4G","195/55 R16","₹3,200 – ₹4,500"),
+  t("bridge","Bridgestone","Turanza T005A","195/55 R16","₹4,000 – ₹5,500"),
+  t("conti","Continental","PremiumContact 6","195/55 R16","₹4,800 – ₹6,500"),
+]}
+function tyres16punch(){return[
+  t("ceat","CEAT","SecuraDrive","195/60 R16","₹3,500 – ₹4,600"),
+  t("apollo","Apollo","Amazer 4G Life","195/60 R16","₹3,000 – ₹3,900"),
+  t("bridge","Bridgestone","Ecopia EP150","195/60 R16","₹3,800 – ₹4,900"),
+  t("conti","Continental","ComfortContact CC6","195/60 R16","₹4,200 – ₹5,500"),
+]}
+function tyres16sedan(){return[
+  t("ceat","CEAT","Czar Sport","205/55 R16","₹4,000 – ₹5,200"),
+  t("apollo","Apollo","Alnac 4G","205/55 R16","₹3,500 – ₹4,800"),
+  t("bridge","Bridgestone","Turanza T005A","205/55 R16","₹4,500 – ₹6,000"),
+  t("conti","Continental","PremiumContact 6","205/55 R16","₹5,200 – ₹7,000"),
+]}
+function tyres16sedan2(){return[
+  t("ceat","CEAT","Czar Sport","215/55 R16","₹4,200 – ₹5,500"),
+  t("apollo","Apollo","Alnac 4G","215/55 R16","₹3,800 – ₹5,000"),
+  t("bridge","Bridgestone","Turanza T005A","215/55 R16","₹4,800 – ₹6,500"),
+  t("conti","Continental","PremiumContact 6","215/55 R16","₹5,500 – ₹7,500"),
+]}
+function tyres16suv_sm(){return[
+  t("ceat","CEAT","SecuraDrive SUV","195/60 R16","₹3,800 – ₹5,200"),
+  t("apollo","Apollo","Apterra HT2","195/60 R16","₹3,500 – ₹4,800"),
+  t("bridge","Bridgestone","Dueler H/P Sport","195/60 R16","₹4,500 – ₹6,200"),
+  t("conti","Continental","CrossContact LX25","195/60 R16","₹5,000 – ₹7,000"),
+]}
+function tyres16suv(){return[
+  t("ceat","CEAT","SecuraDrive SUV","215/60 R16","₹4,200 – ₹5,800"),
+  t("apollo","Apollo","Apterra HT2","215/60 R16","₹3,900 – ₹5,200"),
+  t("bridge","Bridgestone","Dueler H/P Sport","215/60 R16","₹5,000 – ₹7,000"),
+  t("conti","Continental","CrossContact LX25","215/60 R16","₹5,500 – ₹7,800"),
+]}
+function tyres16at(){return[
+  t("ceat","CEAT","Czar AT","215/65 R16","₹4,500 – ₹6,200"),
+  t("apollo","Apollo","Apterra A/T2","215/65 R16","₹4,200 – ₹5,800"),
+  t("bridge","Bridgestone","Dueler A/T 693","215/65 R16","₹5,500 – ₹7,800"),
+  t("conti","Continental","CrossContact AT","215/65 R16","₹6,500 – ₹9,000"),
+]}
+function tyres16kushaq(){return[
+  t("ceat","CEAT","SecuraDrive SUV","205/55 R16","₹4,000 – ₹5,500"),
+  t("apollo","Apollo","Apterra HT2","205/55 R16","₹3,700 – ₹5,000"),
+  t("bridge","Bridgestone","Dueler H/P Sport","205/55 R16","₹4,800 – ₹6,500"),
+  t("conti","Continental","CrossContact LX25","205/55 R16","₹5,200 – ₹7,200"),
+]}
+function tyres17creta(){return[
+  t("ceat","CEAT","SecuraDrive SUV","215/60 R17","₹4,600 – ₹6,500"),
+  t("apollo","Apollo","Apterra HT2","215/60 R17","₹4,200 – ₹5,800"),
+  t("bridge","Bridgestone","Dueler H/P Sport","215/60 R17","₹5,500 – ₹7,700"),
+  t("conti","Continental","CrossContact LX25","215/60 R17","₹6,000 – ₹8,500"),
+]}
+function tyres17harrier(){return[
+  t("ceat","CEAT","Czar AT","235/65 R17","₹5,500 – ₹7,500"),
+  t("apollo","Apollo","Apterra HT2","235/65 R17","₹5,000 – ₹6,800"),
+  t("bridge","Bridgestone","Dueler H/T 684 II","235/65 R17","₹6,500 – ₹9,000"),
+  t("conti","Continental","CrossContact LX25","235/65 R17","₹7,500 – ₹10,500"),
+]}
+function tyres17innova(){return[
+  t("ceat","CEAT","SecuraDrive SUV","215/55 R17","₹4,800 – ₹6,500"),
+  t("apollo","Apollo","Apterra HT2","215/55 R17","₹4,500 – ₹6,000"),
+  t("bridge","Bridgestone","Dueler H/T 684 II","215/55 R17","₹5,800 – ₹8,000"),
+  t("conti","Continental","CrossContact LX25","215/55 R17","₹6,500 – ₹9,000"),
+]}
+function tyres17fort(){return[
+  t("ceat","CEAT","Czar AT","265/65 R17","₹6,500 – ₹8,500"),
+  t("apollo","Apollo","Apterra HT2","265/65 R17","₹6,000 – ₹7,700"),
+  t("bridge","Bridgestone","Dueler H/T 684 II","265/65 R17","₹7,800 – ₹10,500"),
+  t("conti","Continental","CrossContact LX25","265/65 R17","₹8,500 – ₹12,000"),
+]}
+function tyres18alcazar(){return[
+  t("ceat","CEAT","Czar AT","235/55 R18","₹6,000 – ₹8,100"),
+  t("apollo","Apollo","Apterra HT2","235/55 R18","₹5,500 – ₹7,500"),
+  t("bridge","Bridgestone","Dueler H/T 684 II","235/55 R18","₹7,200 – ₹9,800"),
+  t("conti","Continental","CrossContact LX25","235/55 R18","₹8,000 – ₹11,500"),
+]}
+function tyres18scorp(){return[
+  t("ceat","CEAT","Czar AT","255/60 R18","₹7,000 – ₹9,500"),
+  t("apollo","Apollo","Apterra A/T2","255/60 R18","₹6,500 – ₹8,800"),
+  t("bridge","Bridgestone","Dueler A/T 693","255/60 R18","₹8,500 – ₹12,000"),
+  t("conti","Continental","CrossContact AT","255/60 R18","₹9,500 – ₹13,500"),
+]}
+function tyres18thar(){return[
+  t("ceat","CEAT","Czar AT","255/65 R18","₹7,500 – ₹10,000"),
+  t("apollo","Apollo","Apterra A/T2","255/65 R18","₹7,000 – ₹9,500"),
+  t("bridge","Bridgestone","Dueler A/T 693","255/65 R18","₹9,000 – ₹12,500"),
+  t("conti","Continental","CrossContact AT","255/65 R18","₹10,500 – ₹14,000"),
+]}
+
+/* BIKE tyre helpers */
+function btyres12(){return[
+  t("ceat","CEAT","Gripp X3","90/90-12","₹850 – ₹1,100"),
+  t("apollo","Apollo","Actigrip","90/90-12","₹820 – ₹1,050"),
+  t("bridge","Bridgestone","Battlax SC2","90/90-12","₹1,200 – ₹1,650"),
+  t("conti","Continental","ContiScoot","90/90-12","₹1,400 – ₹1,900"),
+]}
+function btyres10(){return[
+  t("ceat","CEAT","Gripp X3","90/90-10","₹800 – ₹1,050"),
+  t("apollo","Apollo","Actigrip","90/90-10","₹780 – ₹1,000"),
+  t("bridge","Bridgestone","Battlax SC2","90/90-10","₹1,100 – ₹1,550"),
+  t("conti","Continental","ContiScoot","90/90-10","₹1,300 – ₹1,800"),
+]}
+function btyres275(){return[
+  t("ceat","CEAT","Zoom Plus","2.75-18","₹750 – ₹950"),
+  t("apollo","Apollo","Hawkz","2.75-18","₹720 – ₹900"),
+  t("bridge","Bridgestone","Battlax BT45","2.75-18","₹1,100 – ₹1,500"),
+  t("conti","Continental","ContiStreet","2.75-18","₹1,300 – ₹1,750"),
+]}
+function btyres80(){return[
+  t("ceat","CEAT","Zoom Plus","80/100-18","₹800 – ₹1,050"),
+  t("apollo","Apollo","Hawkz","80/100-18","₹760 – ₹980"),
+  t("bridge","Bridgestone","Battlax BT45","80/100-18","₹1,150 – ₹1,550"),
+  t("conti","Continental","ContiStreet","80/100-18","₹1,350 – ₹1,800"),
+]}
+function btyresRE(){return[
+  t("ceat","CEAT","Gripp Urban","100/90-19","₹1,800 – ₹2,500"),
+  t("apollo","Apollo","Actigrip Sport","100/90-19","₹1,700 – ₹2,400"),
+  t("bridge","Bridgestone","Battlax BT46","100/90-19","₹2,500 – ₹3,500"),
+  t("conti","Continental","ContiRoadAttack 3","100/90-19","₹3,000 – ₹4,200"),
+]}
+function btyresSport(){return[
+  t("ceat","CEAT","Czar Sport","100/80-17","₹1,400 – ₹2,200"),
+  t("apollo","Apollo","Actigrip Sport","100/80-17","₹1,350 – ₹2,100"),
+  t("bridge","Bridgestone","Battlax Sport S21","100/80-17","₹2,200 – ₹3,500"),
+  t("conti","Continental","ContiSportAttack 4","100/80-17","₹2,800 – ₹4,500"),
+]}
+function btyresSport2(){return[
+  t("ceat","CEAT","Czar Sport","110/70-17","₹1,600 – ₹2,500"),
+  t("apollo","Apollo","Actigrip Sport","110/70-17","₹1,500 – ₹2,400"),
+  t("bridge","Bridgestone","Battlax Sport S21","110/70-17","₹2,500 – ₹4,000"),
+  t("conti","Continental","ContiSportAttack 4","110/70-17","₹3,200 – ₹5,000"),
+]}
+
+/* ── VEHICLE DATA ── */
+function v(mk,nm,sg,ic,sz,tyres){return{mk,nm,sg,ic,sz,tyres}}
+
+const HATCH=[
+  v("Maruti Suzuki","Alto K10",      "Hatchback",          "🚗","155/80 R13",tyres13()),
+  v("Renault",      "Kwid",          "Hatchback",          "🚗","155/80 R13",tyres13()),
+  v("Hyundai",      "Grand i10 Nios","Hatchback",          "🚗","175/65 R14",tyres14()),
+  v("Tata",         "Tiago",         "Hatchback",          "🚗","175/65 R14",tyres14()),
+  v("Maruti Suzuki","Swift",         "Hatchback",          "🚗","185/65 R15",tyres15h()),
+  v("Volkswagen",   "Polo",          "Hatchback",          "🚗","185/60 R15",tyres15p()),
+  v("Maruti Suzuki","Baleno",        "Premium Hatchback",  "🚗","195/55 R16",tyres16h()),
+  v("Hyundai",      "i20",           "Premium Hatchback",  "🚗","195/55 R16",tyres16h()),
+  v("Tata",         "Punch",         "Micro-SUV Hatch",    "🚗","195/60 R16",tyres16punch()),
+];
+const SEDAN=[
+  v("Maruti Suzuki","Dzire",  "Compact Sedan","🚙","185/65 R15",tyres15h()),
+  v("Hyundai",      "Verna",  "Mid Sedan",    "🚙","205/55 R16",tyres16sedan()),
+  v("Volkswagen",   "Virtus", "Mid Sedan",    "🚙","205/55 R16",tyres16sedan()),
+  v("Skoda",        "Slavia", "Mid Sedan",    "🚙","215/55 R16",tyres16sedan2()),
+  v("Honda",        "City",   "Mid Sedan",    "🚙","215/55 R16",tyres16sedan2()),
+];
+const CSUV=[
+  v("Nissan",       "Magnite","Compact SUV",      "🚙","195/60 R16",tyres16suv_sm()),
+  v("Maruti Suzuki","Brezza", "Compact SUV",      "🚙","215/60 R16",tyres16suv()),
+  v("Tata",         "Nexon",  "Compact SUV",      "🚙","215/60 R16",tyres16suv()),
+  v("Kia",          "Sonet",  "Compact SUV",      "🚙","215/60 R16",tyres16suv()),
+  v("Skoda",        "Kushaq", "Compact SUV",      "🚙","205/55 R16",tyres16kushaq()),
+  v("Renault",      "Duster", "Compact SUV (AT)", "🚙","215/65 R16",tyres16at()),
+  v("Hyundai",      "Creta",  "Compact SUV",      "🚙","215/60 R17",tyres17creta()),
+  v("Tata",         "Harrier","Mid-Size SUV",      "🚙","235/65 R17",tyres17harrier()),
+];
+const SUV=[
+  v("Toyota",   "Innova Crysta","MUV / MPV",      "🚐","215/55 R17",tyres17innova()),
+  v("Hyundai",  "Alcazar",      "3-Row SUV",      "🚙","235/55 R18",tyres18alcazar()),
+  v("Toyota",   "Fortuner",     "Full-Size SUV",  "🚙","265/65 R17",tyres17fort()),
+  v("Mahindra", "Scorpio N",    "Full-Size SUV",  "🚙","255/60 R18",tyres18scorp()),
+  v("Mahindra", "Thar Roxx",    "Off-Road SUV",   "🚙","255/65 R18",tyres18thar()),
+];
+const SCOOT=[
+  v("Honda",  "Activa 6G",  "Scooter",       "🛵","90/90-12 (F&R)",btyres12()),
+  v("Honda",  "Dio",        "Sporty Scooter","🛵","90/90-12 (F&R)",btyres12()),
+  v("TVS",    "Jupiter",    "Scooter",       "🛵","90/90-12 (F&R)",btyres12()),
+  v("Suzuki", "Access 125", "Scooter",       "🛵","90/90-12 (F&R)",btyres12()),
+  v("Yamaha", "Fascino 125","Scooter",       "🛵","90/90-10 (F&R)",btyres10()),
+];
+const COMM=[
+  v("Hero",  "Splendor Plus","Commuter","🏍️","2.75-18 (F) / 3.00-18 (R)",btyres275()),
+  v("Hero",  "HF Deluxe",   "Commuter","🏍️","2.75-18 (F) / 3.00-18 (R)",btyres275()),
+  v("Bajaj", "Platina 110", "Commuter","🏍️","80/100-18 (F&R)",btyres80()),
+  v("TVS",   "Radeon",      "Commuter","🏍️","80/100-18 (F&R)",btyres80()),
+  v("Honda", "Shine 100",   "Commuter","🏍️","80/100-18 (F&R)",btyres80()),
+];
+const SPORT=[
+  v("Royal Enfield","Classic 350",  "Cruiser",    "🏍️","100/90-19 (F) / 120/80-18 (R)",btyresRE()),
+  v("Royal Enfield","Meteor 350",   "Cruiser",    "🏍️","100/90-19 (F) / 140/70-17 (R)",btyresRE()),
+  v("Bajaj",        "Pulsar NS200", "Sport Naked","🏍️","100/80-17 (F) / 130/70-17 (R)",btyresSport()),
+  v("TVS",          "Apache RTR 200","Sport Naked","🏍️","100/80-17 (F) / 130/70-17 (R)",btyresSport()),
+  v("Honda",        "CB300R",       "Neo Retro",  "🏍️","110/70-17 (F) / 150/60-17 (R)",btyresSport2()),
+  v("KTM",          "Duke 200",     "Sport Naked","🏍️","110/70-17 (F) / 150/60-17 (R)",btyresSport2()),
+];
+
+const BADGE={ceat:"CEAT",apollo:"Apollo",bridge:"Bridge",conti:"Conti"};
+
+function card(veh){
+  const id=(veh.mk+veh.nm).replace(/[^a-zA-Z0-9]/g,"_");
+  const rows=veh.tyres.map(tr=>`
+    <div class="tr">
+      <div class="tr-badge ${tr.b}">${BADGE[tr.b]}</div>
+      <div class="tr-info">
+        <div class="tr-name">${tr.n} – ${tr.m}</div>
+        <div class="tr-sub">${tr.s}</div>
+      </div>
+      <div class="tr-r">
+        <div class="tr-price">${tr.p}</div>
+        <div class="tr-per">per tyre · incl. GST</div>
+      </div>
+    </div>`).join("");
+  return `
+<div class="vc" id="vc_${id}" onclick="tog('vc_${id}')">
+  <div class="vc-head">
+    <div>
+      <div class="vc-make">${veh.mk}</div>
+      <div class="vc-name">${veh.nm}</div>
+      <div class="vc-seg">${veh.sg}</div>
+    </div>
+    <div class="vc-ic">${veh.ic}</div>
+  </div>
+  <div class="vc-sz">OEM Size: ${veh.sz}</div>
+  <div class="vc-tog"><span class="vc-arr">›</span>&nbsp;See Tyres &amp; Prices</div>
+  <div class="tp">
+    <div class="tp-in">
+      <div class="tp-head">Compatible Tyres — Price Range Per Tyre (Approx · Incl. GST)</div>
+      ${rows}
+      <a class="call-btn" href="tel:+919894845750">📞 Call: 98948 45750</a>
+    </div>
+  </div>
+</div>`;
+}
+
+function fill(id,arr){document.getElementById(id).innerHTML=arr.map(card).join("");}
+
+fill("g-hatch", HATCH);
+fill("g-sedan", SEDAN);
+fill("g-csuv",  CSUV);
+fill("g-suv",   SUV);
+fill("g-scoot", SCOOT);
+fill("g-comm",  COMM);
+fill("g-sport", SPORT);
+
+function tog(id){document.getElementById(id).classList.toggle("open");}
+
+function switchTab(tab,btn){
+  document.querySelectorAll(".vsec").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+  document.getElementById(tab).classList.add("active");
+  btn.classList.add("active");
+  document.getElementById("searchInput").value="";
+  filter();
+}
+
+function filter(){
+  const q=document.getElementById("searchInput").value.toLowerCase();
+  let any=false;
+  document.querySelectorAll(".vc").forEach(c=>{
+    const show=!q||c.innerText.toLowerCase().includes(q);
+    c.style.display=show?"":"none";
+    if(show)any=true;
+  });
+  document.querySelectorAll(".clabel").forEach(l=>{
+    const g=l.nextElementSibling;
+    if(!g)return;
+    const vis=[...g.querySelectorAll(".vc")].some(c=>c.style.display!=="none");
+    l.style.display=vis?"":"none";
+    g.style.display=vis?"":"none";
+  });
+  document.getElementById("noRes").style.display=any?"none":"block";
+}
+</script>
+</body>
+</html>
